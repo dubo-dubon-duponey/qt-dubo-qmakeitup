@@ -46,10 +46,13 @@ include($$PWD/build-system/bs-qt.pri)
 
 # XXX unverified
 !isEmpty(DUBO_EXTERNAL){
-    DUBO_EXTERNAL = $$absolute_path($$DUBO_EXTERNAL, $$PROJECT_ROOT)
+    # Fails on windows, fank you
+    !win32{
+        DUBO_EXTERNAL = $$absolute_path($$DUBO_EXTERNAL, $$PROJECT_ROOT)
+    }
 }
 
-message(************************* Building template: $$TEMPLATE *************************)
+message(************************* Building template: $$TEMPLATE $$PROJECT_ROOT *************************)
 message( -> Building: $${DUBO_PROJECT_NAME} $${VERSION} ($${DUBO_VENDOR_NAME}))
 message( -> Git: $${DUBO_GITVERSION} changeset number $${DUBO_GITCHANGENUMBER})
 message( -> Build type: $${DUBO_BUILD_TYPE})
@@ -58,6 +61,8 @@ message( -> Platform: $${DUBO_PLATFORM})
 message( -> Temporary build dir: $${TMP_BASE_DIR})
 message( -> Build destination dir $${DESTDIR})
 message( -> Additional lib/include: $${DUBO_EXTERNAL})
+message( -> LIBS: $${LIBS})
+message( -> INCLUDEPATH: $${INCLUDEPATH})
 
 XHOST = $$system(uname)
 
