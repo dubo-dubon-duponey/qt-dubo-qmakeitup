@@ -3,33 +3,6 @@ equals(QT_MAJOR_VERSION, $$DUBO_MINIMUM_QT_MAJOR):lessThan(QT_MINOR_VERSION, $$D
     error("$$DUBO_PROJECT_NAME works only with Qt $$DUBO_MINIMUM_QT or greater (you have $$QT_VERSION, and this project requires $$DUBO_MINIMUM_QT_MAJOR.$$DUBO_MINIMUM_QT_MINOR)")
 }
 
-# QT4/5 modules add fix
-# WebEngine handling
-isEqual(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 7) {
-    warning("You are using old $$QT_VERSION - downgrading webengine to webkit")
-    contains(QT, webenginewidgets){
-        QT -= webenginewidgets
-        QT += webkitwidgets
-    }
-    contains(QT, webengine){
-        QT -= webengine
-        QT += webkit
-    }
-}
-
-lessThan(QT_MAJOR_VERSION, 5) {
-    warning("You are using very old $$QT_VERSION - downgrading webkit and gui module names")
-    contains(QT, widgets){
-        QT += gui
-        QT -= widgets
-    }
-    contains(QT, webenginewidgets){
-        QT += webkit
-        QT -= webengine
-        QT -= webenginewidgets
-    }
-}
-
 # QT basic config
 CONFIG +=   QT_NO_CAST_FROM_ASCII \ # http://doc.qt.io/qt-5/qstring.html
             QT_NO_CAST_TO_ASCII \ # ibid
