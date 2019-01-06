@@ -1,9 +1,11 @@
-================
-QMakeItUp
-================
+# QMakeItUp
 
-Helpers for qmake based dubo projects.
+A qmake based build framework, primarily driven by qt-dubo projects needs.
 
-TODO:
+# Look into
 
- * move to bazel
+ * bazel: https://bazel.build/
+ * gyp: https://gyp.gsrc.io/
+ * gn: https://gn.googlesource.com/gn/
+ * ninja: https://ninja-build.org/
+ * cmake: https://cmake.org/
