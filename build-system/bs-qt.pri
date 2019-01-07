@@ -11,7 +11,7 @@ CONFIG +=   QT_NO_CAST_FROM_ASCII \ # http://doc.qt.io/qt-5/qstring.html
             QT_USE_FAST_OPERATOR_PLUS # XXX still used?
 
 # To validate with breakpad
-CONFIG += warn_on qt thread exceptions rtti stl
+CONFIG += warn_on qt thread exceptions rtti stl c++17 strict_c++ strict_c
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
