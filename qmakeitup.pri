@@ -34,7 +34,8 @@ win32:exists($$PROJECT_ROOT/win.pri){
 }
 
 # Set the target name
-TARGET = $$lower($$DUBO_PROJECT_NAME)
+# TARGET = $$lower($$DUBO_PROJECT_NAME)
+TARGET = $$DUBO_PROJECT_NAME
 
 # Generic env setup
 include($$PWD/build-system/bs-env.pri)
