@@ -1,5 +1,6 @@
 # Boilerplate and defaults
 DUBO_PROJECT_NAME = ProjectName
+DUBO_BUNDLE_PREFIX = com.you-or-your-corp
 DUBO_VENDOR_NAME = YourCorpName
 DUBO_PROJECT_VERSION_MAJOR = 1
 DUBO_PROJECT_VERSION_MINOR = 0
@@ -34,8 +35,10 @@ win32:exists($$PROJECT_ROOT/win.pri){
 }
 
 # Set the target name
-# TARGET = $$lower($$DUBO_PROJECT_NAME)
 TARGET = $$DUBO_PROJECT_NAME
+
+# Bundle prefix
+QMAKE_TARGET_BUNDLE_PREFIX = $$DUBO_BUNDLE_PREFIX
 
 # Generic env setup
 include($$PWD/build-system/bs-env.pri)

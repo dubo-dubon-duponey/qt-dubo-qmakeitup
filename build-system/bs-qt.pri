@@ -4,8 +4,9 @@ equals(QT_MAJOR_VERSION, $$DUBO_MINIMUM_QT_MAJOR):lessThan(QT_MINOR_VERSION, $$D
 }
 
 # QT basic config
-CONFIG +=   QT_NO_CAST_FROM_ASCII \ # http://doc.qt.io/qt-5/qstring.html
+DEFINES +=  QT_NO_CAST_FROM_ASCII \ # http://doc.qt.io/qt-5/qstring.html
             QT_NO_CAST_TO_ASCII \ # ibid
+            QT_USE_QSTRINGBUILDER \ # ditto
             QT_STRICT_ITERATORS \ # https://wiki.qt.io/Iterators#QT_STRICT_ITERATORS
             QT_USE_FAST_CONCATENATION \ # XXX still used?
             QT_USE_FAST_OPERATOR_PLUS # XXX still used?
@@ -22,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x051200    # disables all the APIs deprecated before Qt 5.7.0
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x051200    # disables all the APIs deprecated before Qt 5.12.0
 
 # Version for app or library
 VER_MAJ = $$DUBO_PROJECT_VERSION_MAJOR
@@ -50,9 +51,16 @@ DESTDIR     = $${PROJECT_ROOT}/../buildd/$${DUBO_PLATFORM}/$${VARIED_DIR}
     DESTDIR = $${DUBO_DESTDIR}
 }
 
+contains(DUBO_LINK_TYPE, static){
+    DEFINES += LIB$$upper($$TARGET)_USE_STATIC
+}
+
 # Only relevant for libs: enable dep tracking
 contains(TEMPLATE, lib){
     CONFIG += absolute_library_soname
+
+    # Define for the global files
+    DEFINES += LIB$$upper($$TARGET)_LIBRARY
 
     # Linking against third-party libs if any
     !isEmpty(DUBO_EXTERNAL){
@@ -83,6 +91,12 @@ contains(TEMPLATE, lib){
         CONFIG += shared
         CONFIG += dll
     }
+
+    #redist.files = $$PROJECT_ROOT/../res/redist/*
+    #redist.path = $$DESTDIR/../share/lib$${TARGET}
+    #INSTALLS += redist
+    copyToDestdir($$PROJECT_ROOT/res/redist/*, $$DESTDIR/../share/lib$${TARGET})
+    copyToDestdir($$PROJECT_ROOT/src/lib$${TARGET}/*.h, $$DESTDIR/../include/lib$${TARGET})
 }
 
 # Allow app to read prl, conversely
