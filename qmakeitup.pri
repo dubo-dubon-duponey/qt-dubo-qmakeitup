@@ -40,6 +40,33 @@ TARGET = $$DUBO_PROJECT_NAME
 # Bundle prefix
 QMAKE_TARGET_BUNDLE_PREFIX = $$DUBO_BUNDLE_PREFIX
 
+XHOST = $$system(uname)
+
+defineTest(copyToDestdir) {
+    files = $$1
+    dest = $$2
+
+    for(FILE, files) {
+        DDIR = $$dest
+
+        !contains(XHOST, Darwin){
+            # Replace slashes in paths with backslashes for Windows
+            win32:FILE ~= s,/,\\,g
+            win32:DDIR ~= s,/,\\,g
+        }
+
+        !contains(XHOST, Darwin):win32{
+            system(mkdir $$quote($$DDIR))
+        }else{
+            system(mkdir -p $$quote($$DDIR))
+        }
+
+        QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+    }
+
+    export(QMAKE_POST_LINK)
+}
+
 # Generic env setup
 include($$PWD/build-system/bs-env.pri)
 # QT os-specific setup
@@ -67,30 +94,3 @@ message( -> Build destination dir $${DESTDIR})
 message( -> Additional lib/include: $${DUBO_EXTERNAL})
 message( -> LIBS: $${LIBS})
 message( -> INCLUDEPATH: $${INCLUDEPATH})
-
-XHOST = $$system(uname)
-
-defineTest(copyToDestdir) {
-    files = $$1
-    dest = $$2
-
-    for(FILE, files) {
-        DDIR = $$dest
-
-        !contains(XHOST, Darwin){
-            # Replace slashes in paths with backslashes for Windows
-            win32:FILE ~= s,/,\\,g
-            win32:DDIR ~= s,/,\\,g
-        }
-
-        !contains(XHOST, Darwin):win32{
-            system(mkdir $$quote($$DDIR))
-        }else{
-            system(mkdir -p $$quote($$DDIR))
-        }
-
-        QMAKE_POST_LINK += $$QMAKE_COPY $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
-    }
-
-    export(QMAKE_POST_LINK)
-}
