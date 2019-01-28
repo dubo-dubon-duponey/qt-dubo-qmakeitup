@@ -64,9 +64,12 @@ win32 {
 }
 
 # XXX Totally stupid if cross-compiling obviously
-!mac:!win32{
-    DUBO_PLATFORM = $$system(uname)-$$system(uname -n)-$$system(arch)
+unix:!mac{
+    DUBO_PLATFORM =  nux-$$system(arch)
 }
+#!mac:!win32{
+#    DUBO_PLATFORM = $$system(uname)-$$system(uname -n)-$$system(arch)
+#}
 
 DUBO_LINK_NAME = $${TARGET}
 win32{
